@@ -1,0 +1,227 @@
+{% extends "main/_base.html" %}
+{% load static %}
+{% block title %}Welcome to LinkinLabs - Your Trusted Online Lab Request Service{% endblock title %}   
+{% block content %}
+    <section class="hero-section">
+	    <div class="container">
+		    <div class="row figure-holder">
+			    <div class="col-12 col-md-6 pt-3 pt-md-4">
+				    <h2 class="site-headline font-weight-bold mt-lg-5 pt-lg-5">The Future of Laboratory Requests.</h2>
+				    <div class="site-tagline mb-3">Easily request, manage, and track your laboratory tests with our user-friendly platform.</div>
+				    <div class="cta-btns">
+						{% if user.is_authenticated %}
+						<div class="mb-4">
+							<a class="btn btn-primary font-weight-bold theme-btn" href="{% url "tests" %}">Request Test</a>
+						</div>
+						{% else %}
+					    <div class="mb-4">
+							<a class="btn btn-primary font-weight-bold theme-btn" href="{% url "register" %}">Get Started</a> or 
+							<a class="btn btn-primary theme-btn theme-btn-ghost font-weight-bold" href="{% url "login" %}">Login</a>
+						</div>
+						{% endif %}
+						<div>
+							<p>
+								Coming Soon on Apple and Android
+							</p>
+						</div>
+					    <ul class="app-stores list-unstyled list-inline mx-auto mx-md-0 d-inline-block">
+						    <li class="list-inline-item me-3"><a href="#"><img class="ios" src="{% static "main/assets/images/appstore-apple.svg" %}" alt="app-store"></a></li>
+						    <li class="list-inline-item"><a href="#"><img class="android" src="{% static "main/assets/images/appstore-android.svg" %}" alt="google play"></a></li>
+					    </ul>
+				    </div>
+			    </div>
+		    </div><!--//row-->
+	    </div>
+    </section><!--//hero-section-->
+
+	<section class="how-it-works py-5" id="howitworks">
+		<div class="container">
+			<h3 class="mb-5 text-center font-weight-bold">How it works</h3>
+			<div class="row justify-content-center">
+				<div class="col-12 col-md-6 col-lg-4 step">
+					<i class="fas fa-user-plus cala"></i>
+					<h5>1. Create an account</h5>
+					<p>Sign up to get started.</p>
+				</div>
+				<div class="col-12 col-md-6 col-lg-4 step">
+					<i class="fas fa-tachometer-alt cala"></i>
+					<h5>2. Visit the user dashboard</h5>
+					<p>Place a request from your dashboard.</p>
+				</div>
+				<div class="col-12 col-md-6 col-lg-4 step">
+					<i class="fas fa-vials cala"></i>
+					<h5>3. Choose test type</h5>
+					<p>FDA/GSA standardized or customized tests.</p>
+				</div>
+				<div class="col-12 col-md-6 col-lg-4 step">
+					<i class="fas fa-shipping-fast cala"></i>
+					<h5>4. Sample delivery</h5>
+					<p>Choose personal delivery or courier service.</p>
+				</div>
+				<div class="col-12 col-md-6 col-lg-4 step">
+					<i class="fas fa-credit-card cala"></i>
+					<h5>5. Make payment</h5>
+					<p>Proceed to secure payment.</p>
+				</div>
+				<div class="col-12 col-md-6 col-lg-4 step">
+					<i class="fas fa-truck cala"></i>
+					<h5>6. Track order</h5>
+					<p>Follow your order status.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+    
+    <section class="logos-section theme-bg-primary py-5 text-center">
+	    <div class="container">
+		    <h3 class="mb-5">We work with trusted and leading laboratories</h3>
+		    <div class="logos-row row mx-auto"> 
+	            <div class="item col-6 col-md-4 col-lg-2 mb-3 mb-lg-0">
+		            <div class="item-inner">
+		                <img src="{% static "main/assets/images/logos/fda_logo.svg" %}" alt="logo">
+		            </div><!--//item-inner-->
+	            </div><!--//item-->
+	            <div class="item col-6 col-md-4 col-lg-2 mb-3 mb-lg-0">
+		            <div class="item-inner">
+		                <img src="{% static "main/assets/images/logos/gsa_logo.svg" %}" alt="logo">
+		            </div><!--//item-inner-->
+	            </div><!--//item-->
+	            <div class="item col-6 col-md-4 col-lg-2 mb-3 mb-lg-0">
+		            <div class="item-inner">
+		                <img src="{% static "main/assets/images/logos/knust_logo.svg" %}" alt="logo">
+		            </div><!--//item-inner-->
+	            </div><!--//item-->
+	            <div class="item col-6 col-md-4 col-lg-2 mb-3 mb-lg-0">
+		            <div class="item-inner">
+		                <img src="{% static "main/assets/images/logos/uhas_logo.svg" %}" alt="logo">
+		            </div><!--//item-inner-->
+	            </div><!--//item-->
+	            <div class="item col-6 col-md-4 col-lg-2 mb-3 mb-lg-0">
+		            <div class="item-inner">
+		                <img src="{% static "main/assets/images/logos/noguchi_logo.svg" %}" alt="logo">
+		            </div><!--//item-inner-->
+	            </div><!--//item-->
+	            
+	        </div>
+			    
+	    </div><!--//container-->
+    </section><!--//logo-section-->
+    
+    <section class="benefits-section py-5">
+	    
+	    <div class="container py-lg-5" id="benefits">
+		    <h3 class="mb-5 text-center font-weight-bold">Why Choose LinkinLabs?</h3>
+		    <div class="row">
+		        <div class="item col-12 col-lg-4">
+				    <div class="item-inner text-center p-3 p-lg-5">
+					    <img class="mb-3" src="assets/images/icon-target.svg" alt="" />
+					    <h5>Seamless Experience</h5>
+					    <div>Our platform is designed for ease of use, ensuring a smooth process from test request to results delivery.</div>
+				    </div><!--//item-inner-->
+			    </div><!--//item-->
+			    <div class="item col-12 col-lg-4">
+				    <div class="item-inner text-center p-3 p-lg-5">
+					    <img class="mb-3" src="assets/images/icon-rocket.svg" alt="" />
+					    <h5>Fast and Reliable</h5>
+					    <div>Get your tests processed quickly with reliable results you can trust.</div>
+				    </div><!--//item-inner-->
+			    </div><!--//item-->
+			    <div class="item col-12 col-lg-4">
+				    <div class="item-inner text-center p-3 p-lg-5">
+					    <img class="mb-3" src="assets/images/icon-cogs.svg" alt="" />
+					    <h5>Customizable Services</h5>
+					    <div>Choose from a variety of tests and services tailored to your needs.</div>
+				    </div><!--//item-inner-->
+			    </div><!--//item-->
+		    </div><!--//row-->
+	    </div>
+	    
+    </section><!--//benefits-section-->
+    
+    <section class="features-section py-5">
+	    <div class="container py-lg-5 position-relative">
+		    <h3 class="mb-3 text-center font-weight-bold section-heading">Platform Features</h3>
+		    <div class="row pt-5 mb-5">
+			    
+			    <div class="col-12 col-md-6 col-xl-5 offset-xl-1 d-none d-md-block">
+				    <img class="product-figure product-figure-1 img-fluid" src="{% static "main/assets/images/product-figure-3.png" %}" alt="" />
+			    </div>
+			    
+		        <div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">
+				    <div class="card rounded border-0 shadow-lg  mb-5">
+					    <div class="card-body p-4">
+							<h5 class="card-title"><i class="far fa-chart-bar me-2 me-lg-3 text-primary fa-lg fa-fw"></i>Advanced Analytics</h5>
+							<p class="card-text">Track your test requests and results with our comprehensive analytics tools.</p>
+							<a class="more-link" href="{% url "features" %}" >Learn more <span class="more-arrow">&rarr;</span></a>
+						</div>
+				    </div><!--//card-->
+				    
+				    <div class="card rounded border-0 shadow-lg mb-5">
+					    <div class="card-body p-4">
+							<h5 class="card-title"><i class="fas fa-laptop-code me-2 me-lg-3 text-primary fa-lg fa-fw"></i>Secure Data</h5>
+							<p class="card-text">Your data is safe with us. We employ the latest security measures to protect your information.</p>
+							<a class="more-link" href="{% url "features" %}" >Learn more <span class="more-arrow">&rarr;</span></a>
+						</div>
+				    </div><!--//card-->
+				    <div class="card rounded border-0 shadow-lg">
+					    <div class="card-body p-4">
+							<h5 class="card-title"><i class="far fa-calendar-alt me-2 me-lg-3 text-primary fa-lg fa-fw"></i>Easy Scheduling</h5>
+							<p class="card-text">Schedule your tests at a time that is convenient for you.</p>
+							<a class="more-link" href="{% url "features" %}" >Learn more <span class="more-arrow">&rarr;</span></a>
+						</div>
+				    </div><!--//card-->
+			    </div>
+		    </div>
+		    
+		    
+		    <div class="pt-5 text-center">
+			    <a class="btn btn-primary theme-btn theme-btn-ghost font-weight-bold" href="{% url "features" %}">View all features</a>
+		    </div>
+	    </div><!--//container-->
+	    
+    </section><!--//features-section-->
+    
+    <section class="cta-section py-5 theme-bg-secondary text-center">
+		<div class="container">
+			<h3 class="text-white font-weight-bold mb-3">Get Started with Our Comprehensive Testing Services!</h3>
+			{% if user.is_authenticated %}
+			<div class="text-white mx-auto single-col-max-width section-intro">
+				You have access to request customized and fixed tests for your products. Ensure quality and compliance with ease.
+				Join us and experience seamless testing and reliable results.
+			</div>
+			<a class="btn theme-btn theme-btn-ghost theme-btn-on-bg mt-4" href="{% url "tests" %}">Request Test</a>
+			{% else %}
+			<div class="text-white mx-auto single-col-max-width section-intro">
+				Sign up today to access customized and fixed tests for your products. Ensure quality and compliance with ease.
+				Join us and experience seamless testing and reliable results.
+			</div>
+			<a class="btn theme-btn theme-btn-ghost theme-btn-on-bg mt-4" href="{% url "register" %}">Sign Up Now - It's FREE</a>
+			{% endif %}
+		</div>
+	</section><!--//cta-section-->
+
+
+	<section class="contact-section py-5 text-center" id="contact">
+		<div class="container">
+			<h3 class="mb-5 text-center font-weight-bold">Contact Us</h3>
+			<div class="row">
+					<p>If you have any questions or need further information, feel free to contact us.</p>
+					<ul class="list-unstyled">
+						<li class="mb-2">
+							<i class="fas fa-phone-alt me-2"></i>
+							<a href="tel:+233249347546">+233-249-347-546</a> / 
+							<a href="tel:+233503386203">+233-503-386-203</a>
+						</li>
+						<li class="mb-2">
+							<i class="fas fa-envelope me-2"></i>
+							<a href="mailto:support@linkinlabs.pfsgh.com">support@linkinlabs.pfsgh.com</a>
+						</li>
+						<li class="mb-2">
+							<i class="fas fa-map-marker-alt me-2"></i>
+							Zibra Street, Pokuase, Accra
+						</li>
+					</ul>
+			</div>
+		</div>
+	</section><!--//contact-section-->
+{% endblock content %}

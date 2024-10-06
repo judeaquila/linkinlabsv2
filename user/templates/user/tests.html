@@ -1,0 +1,150 @@
+{% extends "user/_base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} Available Tests {% endblock title %}
+{% block header-content %}
+<h1>Explore All Available Tests</h1>
+<p>Browse through our comprehensive list of tests to find the right one for your needs. Click on a test to view details and request it.</p>
+{% endblock header-content %}
+
+{% block body-content%}
+<div class="section-title">
+    <h3>FDA/GSA Standard Tests</h3>
+</div>
+
+<div class="row">
+    <!-- FDA CARDS -->
+    {% for test in fda_gsa_tests %}
+    <div class="col-md-4">
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">{{ test.name }}</h5>
+                <p class="card-text">Price Range: <em>GHȼ {{ test.price_range }}</em> </p>
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestTestModal{{ test.id }}">
+                    Request Test
+                </a>
+                <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#testDetailsModal{{ test.id }}">Details</a>
+            </div>
+            
+        </div>
+    </div>
+
+    <!-- Test Request Modal for each test -->
+    <div class="modal fade" id="requestTestModal{{ test.id }}" tabindex="-1" aria-labelledby="requestTestModalLabel{{ test.id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="requestTestModalLabel{{ test.id }}">{{ test.name }} Test</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form method="POST" action="{% url "request_test" %}">
+              {% csrf_token %}
+              {% comment %} <div class="mb-3">
+                <label for="testName{{ test.id }}" class="form-label">Test Name</label>
+                <input type="text" class="form-control" id="testName{{ test.id }}" name="test_name" value="{{ test.name }}" readonly>
+              </div>
+              <div class="mb-3">
+                <label for="testPrice{{ test.id }}" class="form-label">Price</label>
+                <input type="text" class="form-control" id="testPrice{{ test.id }}" name="test_price" value="{{ test.price }}" readonly>
+              </div> {% endcomment %}
+              <div class="mb-3">
+                {{ form | crispy }}
+              </div>
+              <button type="submit" class="btn btn-primary">Submit Request</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Test Details Modal for each test -->
+    <div class="modal fade" id="testDetailsModal{{ test.id }}" tabindex="-1" aria-labelledby="testDetailsModalLabel{{ test.id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="testDetailsModalLabel{{ test.id }}">About {{ test.name }} Test</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              {{ test.details|default:"Details will be updated soon." }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No tests available.</p>
+    {% endfor %}
+</div>
+
+<hr class="mb-5 mt-5">
+
+<div class="section-title">
+    <h3>Custom Tests</h3>
+</div>
+
+<div class="row">
+    <!-- CUSTOM CARDS -->
+    {% for test in custom_tests %}
+    <div class="col-md-4">
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title">{{ test.name }}</h5>
+                <p class="card-text">Price Range: <em>US$ {{ test.price_range }}</em> </p>
+                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestTestModal{{ test.id }}">Request Test</a>
+                <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#testDetailsModal{{ test.id }}">Details</a>
+            </div>
+        </div>
+    </div>
+
+        <!-- Modal for each test -->
+        <div class="modal fade" id="requestTestModal{{ test.id }}" tabindex="-1" aria-labelledby="requestTestModalLabel{{ test.id }}" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="requestTestModalLabel{{ test.id }}">{{ test.name }} Test</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form method="POST" action="{% url "request_test" %}">
+                    {% csrf_token %}
+                    {% comment %} <div class="mb-3">
+                      <label for="testName{{ test.id }}" class="form-label">Test Name</label>
+                      <input type="text" class="form-control" id="testName{{ test.id }}" name="test_name" value="{{ test.name }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                      <label for="testPrice{{ test.id }}" class="form-label">Price</label>
+                      <input type="text" class="form-control" id="testPrice{{ test.id }}" name="test_price" value="{{ test.price }}" readonly>
+                    </div> {% endcomment %}
+                    <div class="mb-3">
+                      {{ form | crispy }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Request</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+
+            <!-- Test Details Modal for each test -->
+    <div class="modal fade" id="testDetailsModal{{ test.id }}" tabindex="-1" aria-labelledby="testDetailsModalLabel{{ test.id }}" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="testDetailsModalLabel{{ test.id }}">About {{ test.name }} Test</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              {{ test.details|default:"Details will be updated soon." }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+        {% empty %}
+        <p>No tests available.</p>
+    {% endfor %}
+</div>
+{% endblock body-content %}

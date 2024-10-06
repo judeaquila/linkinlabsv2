@@ -1,0 +1,47 @@
+{% extends 'user/_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}{{user.username}}'s Profile{% endblock %}
+
+{% block header-content %}
+<h1>Profile</h1>
+<p>Manage your personal information and account settings.</p>
+{% endblock header-content %}
+
+{% block body-content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Personal Information</h5>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {{ user_form | crispy }}
+                    <button type="submit" class="btn btn-primary mb-3">Update Information</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Other Details</h5>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {{ profile_form | crispy }}
+                    <button type="submit" class="btn btn-primary mb-3">Update Details</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Social Media Presence</h5>
+        <form method="POST" action="">
+            {% csrf_token %}
+            {{ social_form | crispy }}
+            <button type="submit" class="btn btn-primary">Update Social Media</button>
+        </form>
+    </div>
+</div>
+{% endblock body-content %}

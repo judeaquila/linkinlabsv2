@@ -1,0 +1,20 @@
+{% extends "payment/_base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}{{user.username}}'s Transactions | Fund Your Wallet {% endblock title %}
+{% block header-content %}
+<h1>Fund your Wallet</h1>
+<p>Fund your wallet to effortlessly manage and make payments within the app. Simply enter the amount you'd like to deposit, choose your payment method, and follow the prompts to complete the process.</p>
+
+{% endblock header-content %}
+{% block body-content %}
+<div class="section-title">
+  <h3>Deposit Funds</h3>
+</div>
+<div class="row">
+  <form method="POST" action="{% url "initiate_deposit" %}">
+    {% csrf_token %}
+    {{ form | crispy }}
+    <button type="submit" class="btn btn-primary">Deposit</button>
+  </form>
+</div>
+{% endblock body-content %}

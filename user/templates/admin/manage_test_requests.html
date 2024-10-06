@@ -1,0 +1,129 @@
+{% extends "admin/_base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}All Requests{% endblock title %}
+{% block header-content %}
+    <h1>Admin Dashboard</h1>
+    <p>Manage users, tests, requests, revenue, and more from a single interface.</p>
+{% endblock header-content %}
+{% block body-content %}
+<div class="section-title">
+    <h3>Manage Test Requests</h3>
+</div>
+<div class="row">
+    <hr>
+    {% if all_requests %}
+    <div class="overflow-auto">
+        <div class="table-responsive">
+            <table class="table table-striped" style="min-width: 120rem;">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Test Name</th>
+                        <th>Ordered By</th>
+                        <th>Payment Status</th>
+                        <th>Delivery Method</th>
+                        <th>Price Option</th>
+                        <th>Category</th>
+                        <th>Test Price (GHS)</th>
+                        <th>Delivery Status</th>
+                        <th>Date Ordered</th>
+                        <th>Date Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for test_request in all_requests %}
+                    <tr>
+                        <td>{{ test_request.custom_id }}</td>
+                        <td>{{ test_request.test.name }}</td>
+                        <td>{{  test_request.user.email }}</td>
+                        <td>
+                            {% if test_request.payment_status == 'Paid' %}
+                                <span class="badge bg-success">Paid</span>
+                            {% else %}
+                                <span class="badge bg-warning">Unpaid</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ test_request.delivery_method.delivery_method }}</td>
+                        <td>{{ test_request.price_option }}</td>
+                        <td>{{ test_request.test_category.name }}</td>
+                        <td>{{ test_request.test_price|default:"Unavailable" }}</td>
+                        <td>{{ test_request.delivery_status }}</td>
+                        <td>{{ test_request.date_ordered|date:"Y-m-d H:i" }}</td>
+                        <td>{{ test_request.date_updated|date:"Y-m-d H:i" }}</td>
+                        <td>
+                            <!-- Buttons for edit and delete actions -->
+                            <!-- Disable Cancel Button if Test is Completed -->
+                            {% if test_request.delivery_status != 'Completed' %}
+                            <a href="{% url 'update_delivery_status' test_request.id %}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Update Status</a>
+
+                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ test_request.id }}"><i class="fas fa-trash-alt"></i>
+                                Cancel
+                            </button>
+                            {% else %}
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ test_request.id }}" disabled><i class="fas fa-trash-alt"></i>
+                                Cancel
+                            </button>
+                             {% endif %}
+                            
+                            {% if test_request.payment_status == 'Unpaid' %}
+                            <a href="{% url "pay_now" test_request.id %}" class="btn btn-success"><i class="fas fa-coins"></i> Pay Now</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Confirm Request Cancellation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to cancel this test request?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                <i class="fas fa-long-arrow-alt-left"></i> Go Back</button>
+                            <form id="deleteForm" method="POST" action="">
+                                {% csrf_token %}
+                                <input type="hidden" name="test_request_id" id="testRequestId" value="">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i> Cancel Request
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% else %}
+            <p>There are no test requests yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock body-content %}
+{% block extra-js %}
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        // Button that triggered the modal
+        var button = event.relatedTarget;
+        
+        // Extract the data-id attribute from the button
+        var testRequestId = button.getAttribute('data-id');
+        
+        // Get the delete form and update the action with the test request ID
+        var deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = "{% url 'cancel_test_request' 0 %}".replace(0, testRequestId);
+
+        // Update the hidden input value
+        document.getElementById('testRequestId').value = testRequestId;
+    });
+</script>
+{% endblock extra-js %}

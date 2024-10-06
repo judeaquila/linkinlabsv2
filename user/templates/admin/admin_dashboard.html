@@ -1,0 +1,88 @@
+{% extends "admin/_base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}Admin Dashboard{% endblock title %}
+{% block header-content %}
+    <h1>Admin Dashboard</h1>
+    <p>Manage users, tests, requests, revenue, and more from a single interface.</p>
+{% endblock header-content %}
+
+{% block body-content %}
+<div class="row">
+
+    <!-- Main Content -->
+        <!-- Overview Section -->
+        <div class="card mb-4 ml-3">
+            <div class="card-header">
+                <i class="fas fa-chart-line"></i> Overview
+            </div>
+
+            <div class="row mt-4">
+                <!-- Total Requests Card -->
+                <div class="col-md-3">
+                    <div class="card text-white bg-primary mb-3 text-center">
+                        
+                        <div class="card-header">Total Users
+                            <br> <i class="fas fa-list-alt"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ users }}</h5>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submitted Requests Card -->
+                <div class="col-md-3">
+                    <div class="card text-white bg-warning mb-3 text-center">
+                        
+                        <div class="card-header">Total Tests Submitted
+                            <br> <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ tests_submitted }}</h5>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Dispatched to Lab Card -->
+                <div class="col-md-3">
+                    <div class="card text-white bg-success mb-3 text-center">
+                        
+                        <div class="card-header">Dispatched Tests
+                            <br> <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ tests_dispatched }}</h5>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Completed Requests Card -->
+                <div class="col-md-3">
+                    <div class="card text-white bg-success mb-3 text-center">
+                        <div class="card-header">
+                            Total Requests Completed <br>
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ tests_completed }}</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <h6>Most Recent Activities</h6>
+            {% if user_activities %}
+            <ul>
+            {% for activity in user_activities %}
+                <li class="ml-3"><em>{{ activity.timestamp }}</em> - <strong>{{ activity.activity_type }}:</strong> {{ activity.user.username}} {{ activity.description }}</li>
+            {% endfor %}
+            </ul>
+            {% else %}
+                <p>No activities to display.</p>
+            {% endif %}
+            <hr>
+        </div>
+</div>
+{% endblock body-content %}

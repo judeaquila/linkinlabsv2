@@ -1,0 +1,29 @@
+#backgnd {
+    background-image: url('../images/peakpx.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0.5;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 50px auto;
+}
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #fff;
+}
+
+.dashboard-card {
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+.nav-link.active {
+    font-weight: bold;
+    color: #007bff !important;
+}

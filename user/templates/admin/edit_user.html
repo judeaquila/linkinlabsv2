@@ -1,0 +1,26 @@
+{% extends 'admin/_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Edit {{user.username}}'s Profile{% endblock %}
+
+{% block header-content %}
+    <h1>Admin Dashboard</h1>
+    <p>Manage users, tests, requests, revenue, and more from a single interface.</p>
+{% endblock header-content %}
+
+{% block body-content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Edit User Information</h5>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <button type="submit" class="btn btn-primary mb-3">Update Information</button>
+                    <a class="btn btn-danger mb-3" href="{% url "manage_users" %}">Go Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body-content %}

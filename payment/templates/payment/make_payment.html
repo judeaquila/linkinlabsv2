@@ -1,0 +1,51 @@
+{% extends "payment/_base.html" %}
+{% block title %}{{test.name}} Payment | Proceed to Make Payment {% endblock title %}
+{% block header-content %}
+<h1>Proceed to Make Payment</h1>
+<p>You are about to make a payment for the selected test. Once the payment is confirmed, you will be able to track the status of your test request directly from your dashboard.</p>
+
+{% endblock header-content %}
+{% block body-content %}
+<div class="section-title">
+  <h3>Pay for {{test.name}} Test Request</h3>
+</div>
+<div class="row">
+  <p>
+	Proceed to pay <strong>GHS {{ payment.amount }}</strong> for {{ test.name }} test request? <br> <strong>Transaction Reference:</strong> <em>{{ payment.ref }}</em>.
+  </p>
+  <button onclick="payWithPaystack()" class="btn btn-primary">Pay with Card</button>
+  {% comment %} <a href="{% url "pay_with_wallet" payment.id %}" class="btn btn-success">Pay from Wallet</a> {% endcomment %}
+  <a href="{% url "all_requests" %}" class="btn btn-danger">Cancel</a>
+</div>
+{% endblock body-content %}
+
+{% block extra-js %}
+<script src="https://js.paystack.co/v1/inline.js"></script>
+
+<script>
+	function payWithPaystack() {
+		let currency = "GHS";
+		let plan = "";
+		let ref = "{{ payment.ref }}";
+		let amount = "{{ payment.amount }}";
+		let obj = {
+			key: "{{ paystack_pub_key }}",
+			email: "{{ payment.email }}",
+			amount: "{{ amount_value }}",
+			ref: ref,
+			callback: function (response) {
+				window.location.href = "{% url 'verify_payment' payment.ref %}";
+			},
+		};
+		if (Boolean(currency)) {
+			obj.currency = currency.toUpperCase();
+		}
+		if (Boolean(plan)) {
+			obj.plan - plan;
+		}
+
+		var handler = PaystackPop.setup(obj);
+		handler.openIframe();
+	}
+</script>
+{% endblock extra-js %}

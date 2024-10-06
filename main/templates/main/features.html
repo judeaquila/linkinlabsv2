@@ -1,0 +1,76 @@
+{% extends "main/_base.html" %}
+{% block title %}Features | LinkinLabs - Your Trusted Online Lab Request Service{% endblock title %}
+{% block content %}
+<section class="hero-section">
+    <div class="container text-center">
+        <h2 class="site-headline font-weight-bold mt-lg-5 pt-lg-5">Explore All Features</h2>
+        <div class="site-tagline mb-3">Discover the comprehensive features that make LinkinLabs your trusted laboratory solution.</div>
+    </div>
+</section>
+
+<section class="features-list-section py-5">
+    <section class="features-list-section py-5">
+<div class="container py-lg-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">
+            <div class="card rounded border-0 shadow-lg mb-5">
+                <div class="card-body p-4">
+                    <h5 class="card-title"><i class="far fa-chart-bar me-2 me-lg-3 text-primary fa-lg fa-fw"></i>Advanced Analytics</h5>
+                    <p class="card-text">Track your test requests and results with our comprehensive analytics tools.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">
+            <div class="card rounded border-0 shadow-lg mb-5">
+                <div class="card-body p-4">
+                    <h5 class="card-title"><i class="fas fa-laptop-code me-2 me-lg-3 text-primary fa-lg fa-fw"></i>Secure Data</h5>
+                    <p class="card-text">Your data is safe with us. We employ the latest security measures to protect your information.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">
+            <div class="card rounded border-0 shadow-lg mb-5">
+                <div class="card-body p-4">
+                    <h5 class="card-title"><i class="far fa-calendar-alt me-2 me-lg-3 text-primary fa-lg fa-fw"></i>Easy Scheduling</h5>
+                    <p class="card-text">Schedule your tests at a time that is convenient for you.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">
+            <div class="card rounded border-0 shadow-lg mb-5">
+                <div class="card-body p-4">
+                    <h5 class="card-title"><i class="fas fa-cogs me-2 me-lg-3 text-primary fa-lg fa-fw"></i>Customizable Services</h5>
+                    <p class="card-text">Choose from a variety of tests and services tailored to your needs.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">
+            <div class="card rounded border-0 shadow-lg mb-5">
+                <div class="card-body p-4">
+                    <h5 class="card-title"><i class="fas fa-rocket me-2 me-lg-3 text-primary fa-lg fa-fw"></i>Fast and Reliable</h5>
+                    <p class="card-text">Get your tests processed quickly with reliable results you can trust.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-5 pr-xl-3 pt-md-3">
+            <div class="card rounded border-0 shadow-lg mb-5">
+                <div class="card-body p-4">
+                    <h5 class="card-title"><i class="fas fa-users me-2 me-lg-3 text-primary fa-lg fa-fw"></i>User-Friendly Interface</h5>
+                    <p class="card-text">Our platform is designed for ease of use, ensuring a smooth process from test request to results delivery.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+        {% if user.is_authenticated %}
+        <div class="text-center pt-4">
+            <a class="btn btn-primary theme-btn font-weight-bold" href="{% url "tests" %}">Request Test</a>
+        </div>
+        {% else %}
+        <div class="text-center pt-4">
+            <a class="btn btn-primary theme-btn font-weight-bold" href="{% url "register" %}">Get Started</a>
+        </div>
+        {% endif %}
+</section>
+{% endblock content %}
