@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | LinkinLabs</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'main/assets/images/favicon.ico' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen text-slate-900 overflow-x-hidden">
+
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-slate-100">
+        <div class="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="{% url 'home' %}" class="flex items-center gap-2 cursor-pointer group select-none">
+                <img src="{% static 'main/assets/images/logo.svg' %}" alt="LinkinLabs Logo" class="w-6 h-6 object-contain" />
+                <span class="font-bold text-xl tracking-tight text-slate-800 group-hover:text-blue-600 transition-colors">LinkinLabs</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-24 px-6 max-w-4xl mx-auto">
+        
+        <div class="space-y-4 mb-12 pb-8 border-b border-slate-100">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">Privacy Policy</h1>
+            <p class="text-sm text-slate-400 font-medium">Last Updated: June 9, 2026</p>
+            <p class="text-base sm:text-lg text-slate-600 leading-relaxed pt-2">
+                At LinkinLabs, accessible via <a href="https://linkinlabsgh.pfsgh.com">https://linkinlabsgh.pfsgh.com</a>, one of our main priorities is the privacy of our visitors and registered users. This Privacy Policy document outlines the types of information collected, recorded, and handled by our platform, and how we protect your food analysis data.
+            </p>
+        </div>
+
+        <div class="space-y-10 text-slate-600 leading-relaxed">
+            
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">1. Information We Collect</h2>
+                <p>
+                    When you use our platform to coordinate testing services, we collect several types of operational and personal indicators to process requests efficiently:
+                </p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li><strong>Account Identifiers:</strong> Name, professional email address, organization name, telephone contact details, and secure login variables.</li>
+                    <li><strong>Sample Metadata:</strong> Descriptions, nutritional types, production parameters, batch identification references, and storage constraints necessary for lab assessments.</li>
+                    <li><strong>Transactional Logs:</strong> Request pipelines, courier dispatch selections, payment status records, and system actions performed within your client portal.</li>
+                </ul>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">2. How We Use Your Information</h2>
+                <p>We process data under strict regulatory mandates to deliver cohesive logistical services. Your information is used to:</p>
+                <ul class="list-disc pl-6 space-y-2">
+                    <li>Route physical samples safely from your custody directly to verified laboratory testing centers.</li>
+                    <li>Generate analytical summaries, progress logs, status milestone alerts, and electronic compliance certificates.</li>
+                    <li>Maintain secure operational infrastructure, analyze interface metrics, and troubleshoot server performance bottlenecks.</li>
+                    <li>Communicate vital safety indicators or platform status modifications directly to registered users.</li>
+                </ul>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">3. Data Sharing and Laboratory Disclosure</h2>
+                <p>
+                    LinkinLabs functions as a connecting framework. We explicitly share sample criteria and required data parameters exclusively with our trusted laboratory partners (such as the FDA, GSA, KNUST, NOGUCHI, or UHAS) to fulfill your requested testing demands. We do not rent, distribute, sell, or monetize client rosters to external marketing organizations under any circumstances.
+                </p>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">4. Security Measures and Retaining Custody</h2>
+                <p>
+                    We implement modern end-to-end server firewalls, relational access restriction controls, and encryption layers to safeguard sensitive lab certifications. Account metrics are held within our relational databases for as long as your user profile remains open or as mandated by regional food governance policies.
+                </p>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">5. Your Data Access Rights</h2>
+                <p>
+                    You retain full operational authority over your platform tracking indices. You have the right to request clear duplicates of your testing summaries, update outdated account particulars, or request the closure and permanent scrubbing of your profile tracking history by logging a formal request to our desk.
+                </p>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">6. Revisions to this Privacy Framework</h2>
+                <p>
+                    We reserve the right to update this logistical privacy framework dynamically as food metrics standards alter. Any structural changes will be announced explicitly on this webpage with a refreshed revision date indicator.
+                </p>
+            </section>
+
+            <section class="space-y-3 pt-6 border-t border-slate-100">
+                <h2 class="text-xl font-bold text-slate-900">Contact Desk</h2>
+                <p>If you have any questions or require explicit details regarding our privacy operations, do not hesitate to contact our data officer:</p>
+                <p class="font-medium text-slate-800">Email: support@linkinlabs.pfsgh.com</p>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-slate-50 border-t border-slate-100 py-8 px-6 text-center text-xs text-slate-400">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p>&copy; 2026 LinkinLabs. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

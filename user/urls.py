@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import user_dashboard, profile, tests, request_test, user_requests, transactions, update_test_request, cancel_test_request, pay_now, admin_dashboard, manage_users, edit_user, manage_test_requests, update_delivery_status
+from .views import user_dashboard, profile, tests, request_test, user_requests, transactions, update_test_request, cancel_test_request, pay_now, admin_dashboard, manage_users, edit_user, manage_test_requests, update_delivery_status, transaction_ledger
 
 urlpatterns = [
     path('dashboard/', user_dashboard, name='user_dashboard'),
@@ -18,4 +18,5 @@ urlpatterns = [
     path('admin/edit_user/<str:id>/', edit_user, name='edit_user'),
     path('admin/manage_test_requests/', manage_test_requests, name='manage_test_requests'),
     path('admin/update_delivery_status/<str:id>/', update_delivery_status, name='update_delivery_status'),
+    path('admin/transactions/', transaction_ledger, name='transactions'),
 ]

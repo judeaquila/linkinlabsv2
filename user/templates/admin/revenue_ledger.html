@@ -1,0 +1,57 @@
+{% extends "admin/_base.html" %}
+
+{% block title %}Revenue Ledger{% endblock title %}
+
+{% block body-content %}
+<div class="space-y-8">
+
+    <div class="flex items-center justify-between border-b border-slate-100 pb-6">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-900">Revenue Ledger</h1>
+            <p class="mt-1 text-xs text-slate-500">Real-time audit of all platform transactions and payment statuses.</p>
+        </div>
+        <div class="text-right">
+            <p class="text-[10px] uppercase font-bold text-slate-400">Total Verified Volume</p>
+            <p class="text-xl font-bold text-slate-900">GHS {{ total_volume }}</p>
+        </div>
+    </div>
+
+    <div class="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse min-w-[900px]">
+                <thead>
+                    <tr class="bg-slate-50/70 border-b border-slate-100 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                        <th class="py-3.5 px-6">Date</th>
+                        <th class="py-3.5 px-6">Reference</th>
+                        <th class="py-3.5 px-6">User/Email</th>
+                        <th class="py-3.5 px-6">Status</th>
+                        <th class="py-3.5 px-6 text-right">Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50 text-xs">
+                    {% for tx in transactions %}
+                    <tr class="hover:bg-slate-50/40 transition-colors">
+                        <td class="py-4 px-6 text-slate-500">{{ tx.date_created|date:"Y-m-d H:i" }}</td>
+                        <td class="py-4 px-6 font-mono text-slate-600 truncate max-w-[150px]">{{ tx.ref|truncatechars:20 }}</td>
+                        <td class="py-4 px-6">
+                            <div class="text-slate-900 font-medium">{{ tx.user.username|default:"Guest" }}</div>
+                            <div class="text-[10px] text-slate-400">{{ tx.email }}</div>
+                        </td>
+                        <td class="py-4 px-6">
+                            {% if tx.verified %}
+                                <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-md font-semibold">Verified</span>
+                            {% else %}
+                                <span class="px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-100 rounded-md font-semibold">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6 text-right font-bold text-slate-900">GHS {{ tx.amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="py-12 text-center text-slate-400">No transactions recorded.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock body-content %}

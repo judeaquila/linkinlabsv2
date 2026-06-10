@@ -1,0 +1,74 @@
+{% extends "main/_base.html" %}
+{% load static %}
+{% block title %}Our Standards | LinkinLabs - Trusted Food Safety Assurance{% endblock title %}
+
+{% block content %}
+    <!-- Header Block -->
+    <section class="py-20 sm:py-28 bg-gradient-to-b from-white to-transparent">
+        <div class="mx-auto max-w-4xl px-4 text-center space-y-4">
+            <h2 class="text-3xl font-serif tracking-tight text-organic-900 sm:text-5xl">
+                Our Standards
+            </h2>
+            <p class="text-base sm:text-lg text-organic-900/60 leading-relaxed max-w-xl mx-auto">
+                Accuracy isn't optional when it comes to the food we eat. Here is how we ensure every result returned to your dashboard is rock-solid and verified.
+            </p>
+        </div>
+    </section>
+
+    <!-- Editorial Standards Layout -->
+    <section class="pb-24 sm:pb-32">
+        <div class="mx-auto max-w-5xl px-6">
+            <div class="space-y-24">
+                
+                <!-- Pillar 1 -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start border-t border-organic-100 pt-12">
+                    <div class="md:col-span-4">
+                        <span class="text-xs font-bold uppercase tracking-widest text-organic-700 block mb-2">Network Rule</span>
+                        <h3 class="font-serif text-xl font-normal text-organic-900">100% Accredited Labs</h3>
+                    </div>
+                    <div class="md:col-span-8 text-sm text-organic-900/60 leading-relaxed space-y-3">
+                        <p>
+                            We do not own the laboratories, nor do we run random backyard test setups. LinkinLabs connects you exclusively with vetted, fully accredited national and international partner facilities. 
+                        </p>
+                        <p>
+                            Every partner facility in our network maintains strict certifications, meaning your test results carry official weight with health inspectors, retail chains, and international border customs.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start border-t border-organic-100 pt-12">
+                    <div class="md:col-span-4">
+                        <span class="text-xs font-bold uppercase tracking-widest text-organic-700 block mb-2">Logistics Rule</span>
+                        <h3 class="font-serif text-xl font-normal text-organic-900">Unbroken Chain of Custody</h3>
+                    </div>
+                    <div class="md:col-span-8 text-sm text-organic-900/60 leading-relaxed space-y-3">
+                        <p>
+                            A laboratory test is only as good as the sample being tested. If a sample spoils or changes temperature during transit, your results are ruined.
+                        </p>
+                        <p>
+                            Our tracking workflow mandates clear hand-off checkpoints. Couriers log physical parameters the second they collect your package, protecting your samples from contamination or swap-ups.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start border-t border-organic-100 pt-12">
+                    <div class="md:col-span-4">
+                        <span class="text-xs font-bold uppercase tracking-widest text-organic-700 block mb-2">Data Rule</span>
+                        <h3 class="font-serif text-xl font-normal text-organic-900">Tamper-Proof Records</h3>
+                    </div>
+                    <div class="md:col-span-8 text-sm text-organic-900/60 leading-relaxed space-y-3">
+                        <p>
+                            Once a lab uploads your final report, the metrics are permanent. No one—not even our internal platform administrators—can alter, trim, or adjust numbers on your certificate. 
+                        </p>
+                        <p>
+                            This complete transparency builds deep, unquestionable trust between you, your bulk distributors, and government food safety regulators.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock content %}

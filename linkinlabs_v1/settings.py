@@ -53,10 +53,12 @@ INSTALLED_APPS = [
     # PACKAGES
     'crispy_forms',
     'crispy_bootstrap4',
+    'crispy_tailwind',
     'rest_framework',
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 MESSAGE_TAGS = {
     message_constants.DEBUG: 'debug',

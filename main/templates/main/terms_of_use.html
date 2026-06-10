@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Use | LinkinLabs</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'main/assets/images/favicon.ico' %}">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen text-slate-900 overflow-x-hidden">
+
+    <nav class="fixed w-full bg-white/90 backdrop-blur-md z-50 border-b border-slate-100">
+        <div class="max-w-4xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="{% url 'home' %}" class="flex items-center gap-2 cursor-pointer group select-none">
+                <img src="{% static 'main/assets/images/logo.svg' %}" alt="LinkinLabs Logo" class="w-6 h-6 object-contain" />
+                <span class="font-bold text-xl tracking-tight text-slate-800 group-hover:text-blue-600 transition-colors">LinkinLabs</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-24 px-6 max-w-4xl mx-auto">
+        
+        <div class="space-y-4 mb-12 pb-8 border-b border-slate-100">
+            <h1 class="text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">Terms of Use</h1>
+            <p class="text-sm text-slate-400 font-medium">Agreement Scope Effective: June 9, 2026</p>
+            <p class="text-base sm:text-lg text-slate-600 leading-relaxed pt-2">
+                Welcome to LinkinLabs. By accessing our registration channels, utilizing our portal dashboard, or submitting food samples for testing, you agree to comply with and be bound by the following legal terms of use. Please review them carefully before signing up to our services.
+            </p>
+        </div>
+
+        <div class="space-y-10 text-slate-600 leading-relaxed">
+            
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">1. Framework Service Definition</h2>
+                <p>
+                    LinkinLabs operates a digital communication system that acts as an intermediary connecting clients to authoritative third-party testing labs. We streamline request submissions, coordinate data handoffs, organize logistics, and distribute digital certifications. LinkinLabs does not directly execute laboratory chemical procedures, micro-biological analysis, or independent physical assays.
+                </p>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">2. User Profiles and Account Accountability</h2>
+                <p>
+                    To place lab requests, users must generate a user profile. You affirm that all metadata supplied is complete, factual, and accurate. You are exclusively responsible for preserving the confidentiality of credentials, API endpoints, and any request activities initialized under your active dashboard session.
+                </p>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">3. Sample Custody and Delivery Terms</h2>
+                <p>
+                    Clients bear complete responsibility for the safety, sealing standard, preservation context, and description accuracy of all material units dispatched for testing. Samples must be delivered in proper storage containers through verified couriers or authorized physical drop-offs. LinkinLabs is not liable for structural sample degeneration or package breaches occurring during external vehicle transport.
+                </p>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">4. Processing Timelines and Certifications</h2>
+                <p>
+                    Estimated turnaround windows stated on dashboard tracking blocks are approximate and depend heavily on individual partner laboratory capacity. Official compliance certifications are distributed dynamically via the client portal as soon as laboratory assessment parameters are fully populated and logged by testing institutions.
+                </p>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">5. Financial Adjustments and Payments</h2>
+                <p>
+                    All scheduled test requests require clear confirmation and full processing settlement through our integrated secure payment gates before laboratories accept and initialize sample testing batches. Refund parameters, if applicable, are governed on a per-case breakdown relative to whether laboratory technicians have initiated testing procedures.
+                </p>
+            </section>
+
+            <section class="space-y-3">
+                <h2 class="text-xl font-bold text-slate-900">6. Limitations of Accountability</h2>
+                <p>
+                    LinkinLabs functions strictly as an operational intermediary engine. We accept no liability for any financial disruption, commercial delay, supply distribution pause, or regulatory consequence arising out of specific laboratory analysis data, analytical report delays, or certificate verification outcomes.
+                </p>
+            </section>
+
+            <section class="space-y-3 pt-6 border-t border-slate-100">
+                <h2 class="text-xl font-bold text-slate-900">Agreement Confirmation</h2>
+                <p>By registering your profile or continuing to utilize this framework structure, you acknowledge you understand and agree to this operational layout code completely.</p>
+                <p class="font-medium text-slate-800">Support Desk: support@linkinlabs.pfsgh.com</p>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-slate-50 border-t border-slate-100 py-8 px-6 text-center text-xs text-slate-400">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p>&copy; 2026 LinkinLabs. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

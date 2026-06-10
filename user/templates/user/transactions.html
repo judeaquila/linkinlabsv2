@@ -1,54 +1,80 @@
 {% extends "user/_base.html" %}
-{% block title %}{{ request.user.username}}'s Transactions | {% endblock title %}
-{% block header-content %}
-<h1>Transactions</h1>
-<p>Here, you can keep track of all your financial activities within the app. This section provides a clear overview of your transaction history, including dates, amounts, and statuses.</p>
-{% endblock header-content %}
+{% block title %}{{ request.user.username }}'s Transactions{% endblock title %}
 
 {% block body-content %}
-<div class="section-title">
-    <h3>All Transactions</h3>
-</div>
+<div class="space-y-10 animate-fade-in">
 
-<div class="row">
-    <!-- User Wallet Section -->
-    <div class="card mt-4">
-        <div class="card-header">
-            <i class="fas fa-wallet"></i> Wallet
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Balance: {{ user_wallet.balance|default:"0.00" }} {{ user_wallet.currency|default:"GHS" }}</h5>
-            <a href="{% url 'initiate_deposit' %}" class="btn btn-primary">Fund Wallet</a>
+    <!-- Page Header Structure -->
+    <div class="pb-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="space-y-1.5">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-blue-600">Billing & Payment History</span>
+            <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Transactions</h1>
+            <p class="text-sm text-slate-500 leading-relaxed">Review your balance, fund your account, and track your complete invoice and payment history.</p>
         </div>
     </div>
 
-    <!-- Transactions Section -->
-    <div class="card mt-4">
-        <div class="card-header">
-            <i class="fas fa-exchange-alt"></i> Transactions
+    <!-- Wallet Balance Section -->
+    <div class="bg-white border border-slate-100 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 shadow-sm">
+        <div class="space-y-1">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Available Balance</span>
+            <h2 class="text-3xl font-bold tracking-tight text-slate-900 tabular-nums">
+                {{ user_wallet.currency|default:"GHS" }} {{ user_wallet.balance|default:"0.00" }}
+            </h2>
         </div>
-        <div class="overflow-auto card-body">
-            <div class="table-responsive">
-                <table class="table table-striped" style="min-width: 120rem;">
+        <div class="shrink-0">
+            <a href="{% url 'initiate_deposit' %}" class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-xs font-semibold text-white hover:bg-blue-700 transition-all shadow-sm group">
+                <svg class="mr-2 h-3.5 w-3.5 text-white/80 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                Fund Wallet
+            </a>
+        </div>
+    </div>
+
+    <!-- Transactions Table Section -->
+    <div class="space-y-4">
+        <div class="border-b border-slate-100 pb-3">
+            <h3 class="text-[11px] font-bold tracking-widest uppercase text-slate-400">All Transactions</h3>
+        </div>
+
+        <div class="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>Reference</th>
+                        <tr class="border-b border-slate-100 bg-slate-50/50">
+                            <th class="p-4 sm:px-6 text-[10px] font-bold uppercase tracking-wider text-slate-400">Date Created</th>
+                            <th class="p-4 sm:px-6 text-[10px] font-bold uppercase tracking-wider text-slate-400">Reference</th>
+                            <th class="p-4 sm:px-6 text-[10px] font-bold uppercase tracking-wider text-slate-400">Amount</th>
+                            <th class="p-4 sm:px-6 text-[10px] font-bold uppercase tracking-wider text-slate-400">Status</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-slate-100">
                         {% for payment in payments %}
-                            <tr>
-                                <td>{{ payment.date_created}}</td>
-                                <td>GHS {{ payment.amount }}</td>
-                                <td>{{ payment.get_verified_display }}</td>
-                                <td>{{ payment.ref }}</td>
+                            <tr class="hover:bg-slate-50/40 transition-colors text-xs text-slate-700">
+                                <td class="p-4 sm:px-6 font-medium whitespace-nowrap">{{ payment.date_created }}</td>
+                                <td class="p-4 sm:px-6 font-mono font-semibold text-slate-500 uppercase tracking-tight whitespace-nowrap">{{ payment.ref }}</td>
+                                <td class="p-4 sm:px-6 font-bold text-slate-900 tabular-nums whitespace-nowrap">GHS {{ payment.amount }}</td>
+                                <td class="p-4 sm:px-6 whitespace-nowrap">
+                                    {% if payment.get_verified_display == "Success" or payment.verified %}
+                                        <span class="inline-flex items-center rounded-md bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-emerald-700 border border-emerald-100">
+                                            Success
+                                        </span>
+                                    {% elif payment.get_verified_display == "Pending" %}
+                                        <span class="inline-flex items-center rounded-md bg-amber-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700 border border-amber-100 animate-pulse">
+                                            Pending
+                                        </span>
+                                    {% else %}
+                                        <span class="inline-flex items-center rounded-md bg-rose-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-rose-700 border border-rose-100">
+                                            {{ payment.get_verified_display|default:"Failed" }}
+                                        </span>
+                                    {% endif %}
+                                </td>
                             </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="4" class="text-center">No transactions yet</td>
+                                <td colspan="4" class="text-center py-16 px-4">
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">No transactions recorded yet.</p>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -56,5 +82,6 @@
             </div>
         </div>
     </div>
+
 </div>
 {% endblock body-content %}

@@ -1,129 +1,128 @@
 {% extends "user/_base.html" %}
-{% load crispy_forms_tags %}
 {% block title %}{{ user.username }} | My Requests{% endblock title %}
-{% block header-content %}
-<h1>Your Requests</h1>
-<p>Use this page to keep track of your requests and stay updated on their current status. If you have any questions or need further assistance, please contact our support team via <a href="mailto:linkinlabs.pfsgh.com">linkinlabs.pfsgh.com</a>.</p>
-{% endblock header-content %}
+
 {% block body-content %}
-<div class="section-title">
-    <h3>Your Test Requests</h3>
-</div>
-<div class="row">
-    <hr>
-    <a href="{% url "request_test" %}" class="btn btn-primary mb-5"><i class="fas fa-plus"></i> Place a Test Request</a>
-    <hr>
+<div class="space-y-6 animate-fade-in">
+
+    <div class="pb-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div class="space-y-1.5">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-blue-600">Track Submitted Requests</span>
+            <h1 class="text-3xl font-extrabold tracking-tight text-slate-900">Submitted Requests</h1>
+            <p class="text-sm text-slate-500 leading-relaxed">Keep track of your active laboratory analysis pipelines and monitor their current statuses.</p>
+        </div>
+        <div class="shrink-0">
+            <a href="{% url 'tests' %}" class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-xs font-semibold text-white hover:bg-blue-700 transition-all shadow-sm group">
+                <svg class="mr-2 h-3.5 w-3.5 text-white/80 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/>
+                </svg>
+                Place a Test Request
+            </a>
+        </div>
+    </div>
+
     {% if test_requests %}
-    <div class="overflow-auto">
-        <div class="table-responsive">
-            <table class="table table-striped" style="min-width: 120rem;">
+    <div class="bg-white border border-slate-100 rounded-2xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
                 <thead>
-                    <tr>
-                        <th>Request ID</th>
-                        <th>Test Name</th>
-                        <th>Test Price (GHS)</th>
-                        <th>Price Option</th>
-                        <th>Category</th>
-                        <th>Delivery Method</th>
-                        <th>Delivery Status</th>
-                        <th>Payment Status</th>
-                        <th>Date Ordered</th>
-                        <th>Date Updated</th>
-                        <th>Actions</th>
+                    <tr class="bg-slate-50/70 border-b border-slate-100 text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        <th class="py-3 px-4">Request ID</th>
+                        <th class="py-3 px-4">Test Name</th>
+                        <th class="py-3 px-4">Price (GHS)</th>
+                        <th class="py-3 px-4">Option</th>
+                        <th class="py-3 px-4">Category</th>
+                        <th class="py-3 px-4">Delivery</th>
+                        <th class="py-3 px-4">Status</th>
+                        <th class="py-3 px-4">Payment</th>
+                        <th class="py-3 px-4">Dates</th>
+                        <th class="py-3 px-4 text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-slate-100 text-xs font-medium text-slate-700">
                     {% for test_request in test_requests %}
-                    <tr>
-                        <td>{{ test_request.custom_id }}</td>
-                        <td>{{ test_request.test.name }}</td>
-                        <td>{{ test_request.test_price|default:"Unavailable" }}</td>
-                        <td>{{ test_request.price_option }}</td>
-                        <td>{{ test_request.test_category.name }}</td>
-                        <td>{{ test_request.delivery_method.delivery_method }}</td>
-                        <td>{{ test_request.delivery_status }}</td>
-                        <td>
+                    <tr class="hover:bg-slate-50/40 transition-colors">
+                        <td class="py-4 px-4 font-mono text-slate-500 text-[11px]">{{ test_request.custom_id }}</td>
+                        
+                        <td class="py-4 px-4 font-semibold text-slate-900">{{ test_request.test.name }}</td>
+                        
+                        <td class="py-4 px-4 text-slate-600 font-mono text-[11px]">GH₵ {{ test_request.test_price|default:"0.00" }}</td>
+                        
+                        <td class="py-4 px-4 text-slate-500">{{ test_request.price_option }}</td>
+                        
+                        <td class="py-4 px-4">
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[10px] font-semibold">
+                                {{ test_request.test_category.name }}
+                            </span>
+                        </td>
+                        
+                        <td class="py-4 px-4 text-slate-500">{{ test_request.delivery_method.delivery_method }}</td>
+                        
+                        <td class="py-4 px-4">
+                            <span class="text-slate-600 font-medium">{{ test_request.delivery_status }}</span>
+                        </td>
+                        
+                        <td class="py-4 px-4">
                             {% if test_request.payment_status == 'Paid' %}
-                                <span class="badge bg-success">Paid</span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-[10px] font-bold">
+                                    Paid
+                                </span>
                             {% else %}
-                                <span class="badge bg-warning">Unpaid</span>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100 text-[10px] font-bold">
+                                    Unpaid
+                                </span>
                             {% endif %}
                         </td>
-                        <td>{{ test_request.date_ordered|date:"Y-m-d H:i" }}</td>
-                        <td>{{ test_request.date_updated|date:"Y-m-d H:i" }}</td>
-                        <td>
-                            <!-- Buttons for edit and delete actions -->
-                            <!-- Disable Cancel Button if Test is Paid -->
-                            {% if test_request.payment_status == 'Unpaid' %}
-                            <a href="{% url 'update_test_request' test_request.id %}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Update</a>
+                        
+                        <td class="py-4 px-4 text-slate-400 text-[11px] leading-normal font-normal">
+                            <div>Ordered: {{ test_request.date_ordered|date:"Y-m-d H:i" }}</div>
+                            <div class="mt-0.5 text-[10px] text-slate-300">Updated: {{ test_request.date_updated|date:"Y-m-d H:i" }}</div>
+                        </td>
+                        
+                        <td class="py-4 px-4 text-right">
+                            <div class="inline-flex items-center justify-end gap-2">
+                                {% if test_request.payment_status == 'Unpaid' %}
+                                    <a href="{% url 'update_test_request' test_request.id %}" class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-[11px] font-semibold text-slate-700 hover:bg-slate-50 transition-colors">
+                                        Update
+                                    </a>
+                                    
+                                    <form method="POST" action="{% url 'cancel_test_request' test_request.id %}" class="inline">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="test_request_id" value="{{ test_request.id }}">
+                                        <button type="submit" 
+                                                onclick="return confirm('Are you sure you want to cancel request {{ test_request.custom_id }}?');"
+                                                class="inline-flex items-center justify-center rounded-lg border border-transparent bg-rose-50 px-2.5 py-1.5 text-[11px] font-semibold text-rose-600 hover:bg-rose-100 transition-colors cursor-pointer">
+                                            Cancel
+                                        </button>
+                                    </form>
 
-                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ test_request.id }}"><i class="fas fa-trash-alt"></i>
-                                Cancel
-                            </button>
-                            {% else %}
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="{{ test_request.id }}" disabled><i class="fas fa-trash-alt"></i>
-                                Cancel
-                            </button>
-                             {% endif %}
-                            
-                            {% if test_request.payment_status == 'Unpaid' %}
-                            <a href="{% url "pay_now" test_request.id %}" class="btn btn-success"><i class="fas fa-coins"></i> Pay Now</a>
-                            {% endif %}
+                                    <a href="{% url 'pay_now' test_request.id %}" class="inline-flex items-center justify-center rounded-lg bg-blue-600 px-2.5 py-1.5 text-[11px] font-semibold text-white hover:bg-blue-700 transition-colors shadow-sm">
+                                        Pay Now
+                                    </a>
+                                {% else %}
+                                    <button type="button" class="inline-flex items-center justify-center rounded-lg border border-slate-100 bg-slate-50 px-2.5 py-1.5 text-[11px] font-semibold text-slate-300 cursor-not-allowed" disabled>
+                                        Cancel
+                                    </button>
+                                {% endif %}
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-
-            <!-- Delete Confirmation Modal -->
-            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteModalLabel">Confirm Request Cancellation</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to cancel this test request?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                <i class="fas fa-long-arrow-alt-left"></i> Go Back</button>
-                            <form id="deleteForm" method="POST" action="">
-                                {% csrf_token %}
-                                <input type="hidden" name="test_request_id" id="testRequestId" value="">
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fas fa-trash-alt"></i> Cancel Request
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {% else %}
-            <p>You have no test requests yet.</p>
-            {% endif %}
         </div>
     </div>
+
+    {% else %}
+    <div class="border border-dashed border-slate-200 rounded-2xl p-12 text-center bg-slate-50/30">
+        <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 text-slate-400 mb-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 2 0 01-2-2V5a2 2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 2 0 01-2 2z"/>
+            </svg>
+        </div>
+        <p class="text-xs font-semibold text-slate-900">No active test requests</p>
+        <p class="text-xs text-slate-400 mt-0.5 max-w-xs mx-auto leading-normal">You haven't submitted any laboratory requests yet. Once you place a request, it will appear here.</p>
+    </div>
+    {% endif %}
+
 </div>
 {% endblock body-content %}
-{% block extra-js %}
-<script>
-    var deleteModal = document.getElementById('deleteModal');
-    deleteModal.addEventListener('show.bs.modal', function (event) {
-        // Button that triggered the modal
-        var button = event.relatedTarget;
-        
-        // Extract the data-id attribute from the button
-        var testRequestId = button.getAttribute('data-id');
-        
-        // Get the delete form and update the action with the test request ID
-        var deleteForm = document.getElementById('deleteForm');
-        deleteForm.action = "{% url 'cancel_test_request' 0 %}".replace(0, testRequestId);
-
-        // Update the hidden input value
-        document.getElementById('testRequestId').value = testRequestId;
-    });
-</script>
-{% endblock extra-js %}

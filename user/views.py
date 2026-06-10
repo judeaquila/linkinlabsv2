@@ -3,13 +3,15 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from accounts.forms import EditUserForm, EditUserProfileForm, EditUserSocialForm
 from accounts.models import UserProfile, UserSocial
-from .models import Test, TestRequest, UserActivity, TestPrice
+from .models import Test, TestRequest, UserActivity, TestPrice, User
 from .forms import TestRequestForm, TestStatusForm
 from django.contrib import messages
 from payment.models import Payment, UserWallet
 from django.conf import settings
 from accounts.decorators import staff_required
 from django.db.models import Sum
+from django.utils import timezone
+from payment.models import Payment
 
 # USER DASHBOARD VIEW
 @login_required
@@ -182,25 +184,33 @@ def tests(request):
     return render(request, 'user/tests.html', context)
 
 
-# PLACE TEST REQUEST VIEW
+# REQUEST FOR LABORATORY TEST
 @login_required
 def request_test(request):
     if request.method == 'POST':
         form = TestRequestForm(request.POST)
 
-        # Retrieve form data
         if form.is_valid():
             test = form.cleaned_data['test']
             test_category = form.cleaned_data['test_category']
             pricing_option = form.cleaned_data['price_option']
             delivery_method = form.cleaned_data['delivery_method']
-            test_price = TestPrice.objects.get(
-                test = test,
-                category = test_category,
-                pricing_option = pricing_option,
-            ).price
             
-            # Create a new TestRequest instance
+            # Fetch pricing model with defensive lookup handling
+            try:
+                test_price = TestPrice.objects.get(
+                    test=test,
+                    category=test_category,
+                    pricing_option=pricing_option,
+                ).price
+            except TestPrice.DoesNotExist:
+                messages.error(
+                    request, 
+                    f"Pricing matrix not found for {test.name} with the selected options. Please modify parameters."
+                )
+                return render(request, 'user/test_request.html', {'form': form})
+            
+            # Instantiate and fill the TestRequest object structure
             test_request = form.save(commit=False)
             test_request.user = request.user   
             test_request.delivery_status = 'Submitted'
@@ -208,46 +218,55 @@ def request_test(request):
             test_request.test_category = test_category
             test_request.delivery_method = delivery_method
             test_request.test_price = test_price
-
             test_request.save()
 
-            # Retrieve PayStack Public Key
+            # Retrieve PayStack public processing environment variables 
             pk = settings.PAYSTACK_PUBLIC_KEY
 
-            # Create Payment Instance
+            # Instantiate tracking Payment row entry references
             payment = Payment.objects.create(
-                amount = test_price,
-                email = request.user.email,
-                user = request.user,
-                test_request = test_request,
+                amount=test_price,
+                email=request.user.email,
+                user=request.user,
+                test_request=test_request,
             )
 
-            payment.save()
-
-            # Create Activity Log
+            # Record security workflow metrics audit log trails
             UserActivity.objects.create(
-                user = request.user,
-                activity_type = 'Test Request',
-                description = f"Submitted a test request for {test_request.test.name}. Payment not done."
+                user=request.user,
+                activity_type='Test Request',
+                description=f"Submitted a test request for {test_request.test.name}. Payment not done."
             )
+            
             messages.success(request, 'Test request submitted successfully! Proceed to make payment.')
 
             context = {
-                'payment':payment,
-                'paystack_pub_key':pk,
-                'amount_value':payment.amount_value,
-                'test':test,
+                'payment': payment,
+                'paystack_pub_key': pk,
+                'amount_value': payment.amount_value,
+                'test': test,
             }
 
             return render(request, 'payment/make_payment.html', context)
+            
     else:
-        form = TestRequestForm()
+        # Check for pre-selection query string context parameters passed from the dashboard
+        initial_data = {}
+        test_id = request.GET.get('test_id')
+        
+        if test_id:
+            # Safely verify the test actually exists before pre-populating
+            test_instance = get_object_or_404(Test, id=test_id)
+            initial_data['test'] = test_instance.id
+
+        form = TestRequestForm(initial=initial_data)
     
     context = {
-        'form':form,
+        'form': form,
     }
 
     return render(request, 'user/test_request.html', context)
+
 
 # UPDATE TEST REQUEST VIEW
 def update_test_request(request, id):
@@ -335,7 +354,8 @@ def pay_now(request, id):
         context = {
             'payment': payment,
             'paystack_pub_key': pk,
-            'amount_value': payment.amount_value
+            'amount_value': payment.amount_value,
+            'test': unpaid_test.test,
         }
 
         return render(request, 'payment/make_payment.html', context)
@@ -368,38 +388,59 @@ def transactions(request):
 # ------------------------------------------------------------------------------------------------ #
 # ------------------------------ ADMINISTRATOR VIEW LOGIC ---------------------------------------- #
 # ------------------------------------------------------------------------------------------------ #
-@staff_required
 @login_required
+@staff_required
 def admin_dashboard(request):
+    # Setup timezone anchor for the current monthly phase
+    now = timezone.now()
+    start_of_month = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+    # Core System Metrics
     users = User.objects.filter(is_superuser=False).count()
     tests_submitted = TestRequest.objects.all().count()
     tests_completed = TestRequest.objects.filter(delivery_status="Completed").count()
-    # total_revenue = Payment.objects.aggregate(total=Sum('amount'))['total']
     tests_dispatched = TestRequest.objects.filter(delivery_status="Dispatched to Lab").count()
 
-    # Track User Activities
+    # Refactored Financial Metrics based on your Payment Model schema
+    # 1. Total revenue aggregated across all successfully verified records
+    total_revenue = Payment.objects.filter(verified=True).aggregate(total=Sum('amount'))['total'] or 0
+    
+    # 2. Verified revenue isolated inside this calendar month window
+    current_month_revenue = Payment.objects.filter(
+        verified=True, 
+        date_created__gte=start_of_month
+    ).aggregate(total=Sum('amount'))['total'] or 0
+    
+    # 3. Value of unverified attempts/pending settlements currently logged
+    pending_payments = Payment.objects.filter(verified=False).aggregate(total=Sum('amount'))['total'] or 0
+
+    # Operational Logs Pipeline
     user_activities = UserActivity.objects.all().order_by('-timestamp')[:10]
 
     context = {
-        'users':users,
-        'tests_submitted':tests_submitted,
-        'tests_completed':tests_completed,
-        # 'total_revenue':total_revenue,
-        'tests_dispatched':tests_dispatched,
-        'user_activities':user_activities,
+        'users': users,
+        'tests_submitted': tests_submitted,
+        'tests_completed': tests_completed,
+        'tests_dispatched': tests_dispatched,
+        'total_revenue': total_revenue,
+        'current_month_revenue': current_month_revenue,
+        'pending_payments': pending_payments,
+        'user_activities': user_activities,
     }
     return render(request, 'admin/admin_dashboard.html', context)
+
 
 @staff_required
 @login_required
 def manage_users(request):
-    users = User.objects.filter(is_superuser=False)
+    users = User.objects.filter(is_superuser=False, is_staff=False)
     user_profiles = UserProfile.objects.filter(user__in=users)
     context = {
         'users': users,
         'user_profiles': user_profiles,
     }
     return render(request, 'admin/manage_users.html', context)
+
 
 @staff_required
 @login_required
@@ -427,6 +468,7 @@ def edit_user(request, id):
     }
     return render(request, 'admin/edit_user.html', context)
 
+
 @staff_required
 @login_required
 def delete_user(request, id):
@@ -452,6 +494,7 @@ def manage_test_requests(request):
     }
     return render(request, 'admin/manage_test_requests.html', context)
 
+
 @staff_required
 @login_required
 def update_delivery_status(request, id):
@@ -473,3 +516,19 @@ def update_delivery_status(request, id):
         'test_request':test_request,
     }
     return render(request, 'admin/update_delivery_status.html', context)
+
+
+@login_required
+@staff_required
+def transaction_ledger(request):
+    # Fetching payments with user context to optimize database hits
+    transactions = Payment.objects.select_related('user').order_by('-date_created')
+    
+    # Simple calculation for a secondary summary line
+    total_volume = transactions.filter(verified=True).aggregate(total=Sum('amount'))['total'] or 0
+    
+    context = {
+        'transactions': transactions,
+        'total_volume': total_volume,
+    }
+    return render(request, 'admin/revenue_ledger.html', context)

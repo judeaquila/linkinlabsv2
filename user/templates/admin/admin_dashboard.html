@@ -1,88 +1,129 @@
 {% extends "admin/_base.html" %}
 {% load crispy_forms_tags %}
+
 {% block title %}Admin Dashboard{% endblock title %}
-{% block header-content %}
-    <h1>Admin Dashboard</h1>
-    <p>Manage users, tests, requests, revenue, and more from a single interface.</p>
-{% endblock header-content %}
 
 {% block body-content %}
-<div class="row">
+<div class="space-y-10">
+    
+    <div class="border-b border-slate-100 pb-6">
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900">Admin Dashboard</h1>
+        <p class="mt-1.5 text-xs text-slate-500 max-w-2xl leading-relaxed">Manage users, tests, requests, revenue, and more from a single interface.</p>
+    </div>
 
-    <!-- Main Content -->
-        <!-- Overview Section -->
-        <div class="card mb-4 ml-3">
-            <div class="card-header">
-                <i class="fas fa-chart-line"></i> Overview
+    <div>
+        <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4">Financial Overview</h2>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            <div class="bg-white border border-slate-100 rounded-xl p-6 shadow-sm">
+                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Gross Revenue</p>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold tracking-tight text-slate-900">GH₵{{ total_revenue|default:"0.00" }}</span>
+                    <span class="inline-flex items-center text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">All-time</span>
+                </div>
+            </div>
+            
+            <div class="bg-white border border-slate-100 rounded-xl p-6 shadow-sm">
+                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">This Month</p>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold tracking-tight text-slate-900">GH₵{{ current_month_revenue|default:"0.00" }}</span>
+                    <span class="text-[11px] font-medium text-slate-400">Current Phase</span>
+                </div>
             </div>
 
-            <div class="row mt-4">
-                <!-- Total Requests Card -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-primary mb-3 text-center">
-                        
-                        <div class="card-header">Total Users
-                            <br> <i class="fas fa-list-alt"></i>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ users }}</h5>
-                        </div>
-                    </div>
+            <div class="bg-white border border-slate-100 rounded-xl p-6 shadow-sm">
+                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Pending Invoices</p>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold tracking-tight text-slate-900">GH₵{{ pending_payments|default:"0.00" }}</span>
+                    <span class="inline-flex items-center text-[10px] font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-100">Awaiting Settlement</span>
                 </div>
-                
-                <!-- Submitted Requests Card -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-warning mb-3 text-center">
-                        
-                        <div class="card-header">Total Tests Submitted
-                            <br> <i class="fas fa-hourglass-half"></i>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ tests_submitted }}</h5>
-                        </div>
-                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            
+            <div class="bg-white border border-slate-100 rounded-xl p-6 shadow-sm transition-all hover:border-slate-200">
+                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Total Users</p>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold tracking-tight text-slate-900">{{ users }}</span>
+                    <span class="text-slate-300">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                    </span>
                 </div>
+            </div>
+            
+            <div class="bg-white border border-slate-100 rounded-xl p-6 shadow-sm transition-all hover:border-slate-200">
+                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Tests Submitted</p>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold tracking-tight text-slate-900">{{ tests_submitted }}</span>
+                    <span class="text-slate-300">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                    </span>
+                </div>
+            </div>
+    
+            <div class="bg-white border border-slate-100 rounded-xl p-6 shadow-sm transition-all hover:border-slate-200">
+                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Dispatched Tests</p>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold tracking-tight text-slate-900">{{ tests_dispatched }}</span>
+                    <span class="text-slate-300">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                    </span>
+                </div>
+            </div>
+            
+            <div class="bg-white border border-slate-100 rounded-xl p-6 shadow-sm transition-all hover:border-slate-200">
+                <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Requests Completed</p>
+                <div class="mt-2 flex items-baseline justify-between">
+                    <span class="text-2xl font-bold tracking-tight text-slate-900">{{ tests_completed }}</span>
+                    <span class="text-slate-300">
+                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
+        <div class="border-b border-slate-100 px-6 py-5">
+            <h3 class="text-xs font-bold tracking-tight text-slate-800 uppercase tracking-wider">Most Recent Activities</h3>
+        </div>
         
-                <!-- Dispatched to Lab Card -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-success mb-3 text-center">
-                        
-                        <div class="card-header">Dispatched Tests
-                            <br> <i class="fas fa-shipping-fast"></i>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ tests_dispatched }}</h5>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Completed Requests Card -->
-                <div class="col-md-3">
-                    <div class="card text-white bg-success mb-3 text-center">
-                        <div class="card-header">
-                            Total Requests Completed <br>
-                            <i class="fas fa-check-circle"></i>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">{{ tests_completed }}</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="row">
-            <h6>Most Recent Activities</h6>
+        <div class="divide-y divide-slate-100 text-xs">
             {% if user_activities %}
-            <ul>
-            {% for activity in user_activities %}
-                <li class="ml-3"><em>{{ activity.timestamp }}</em> - <strong>{{ activity.activity_type }}:</strong> {{ activity.user.username}} {{ activity.description }}</li>
-            {% endfor %}
-            </ul>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50/70 border-b border-slate-100 text-slate-400 font-semibold uppercase tracking-wider text-[10px]">
+                                <th class="py-3 px-6">Timestamp</th>
+                                <th class="py-3 px-6">Activity Type</th>
+                                <th class="py-3 px-6">Operator</th>
+                                <th class="py-3 px-6">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50 text-slate-600">
+                            {% for activity in user_activities %}
+                                <tr class="hover:bg-slate-50/40 transition-colors">
+                                    <td class="py-3.5 px-6 whitespace-nowrap text-slate-400 font-medium">{{ activity.timestamp }}</td>
+                                    <td class="py-3.5 px-6 whitespace-nowrap">
+                                        <span class="inline-flex items-center rounded-md bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-800 border border-slate-200/40">
+                                            {{ activity.activity_type }}
+                                        </span>
+                                    </td>
+                                    <td class="py-3.5 px-6 whitespace-nowrap font-semibold text-slate-800">{{ activity.user.username }}</td>
+                                    <td class="py-3.5 px-6 text-slate-500 max-w-sm truncate">{{ activity.description }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
-                <p>No activities to display.</p>
+                <div class="p-8 text-center text-slate-400">
+                    <p class="font-medium">No activities to display.</p>
+                </div>
             {% endif %}
-            <hr>
         </div>
+    </div>
 </div>
 {% endblock body-content %}

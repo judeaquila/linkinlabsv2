@@ -27,8 +27,15 @@ def custom_login(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
+            
             if user is not None:
                 login(request, user)
+
+                if request.POST.get('remember_me'):
+                    request.session.set_expiry(2592000)
+                else:
+                    request.session.set_expiry(0) # Expires when browser closes
+
                 if user.is_staff or user.is_superuser:
                     return redirect('admin_dashboard')
                 else:

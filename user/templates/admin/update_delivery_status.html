@@ -1,19 +1,54 @@
 {% extends "admin/_base.html" %}
 {% load crispy_forms_tags %}
-{% block title %}Test Request Update{% endblock title %}
-{% block header-content %}
-<h1>Admin Dashboard</h1>
-<p>Manage users, tests, requests, revenue, and more from a single interface.</p>
-{% endblock header-content %}
+
+{% block title %}Update Delivery Status{% endblock title %}
+
 {% block body-content %}
-<div class="section-title">
-    <h3>Update Test Request Status</h3>
+<div class="max-w-xl mx-auto space-y-8">
+    
+    <div class="text-center space-y-2">
+        <h1 class="text-xl font-bold text-slate-900">Update Delivery Status</h1>
+        <p class="text-xs text-slate-500">Managing lifecycle stage for Request: <span class="font-semibold text-slate-700">{{ test_request.custom_id }}</span></p>
+    </div>
+
+    <div class="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
+        <div class="p-6">
+            <form method="POST" action="{% url 'update_delivery_status' test_request.id %}" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="active-form-inputs text-xs">
+                    {{ form|crispy }}
+                </div>
+                
+                <div class="pt-4 border-t border-slate-100 flex items-center justify-end space-x-3">
+                    <a href="{% url 'manage_test_requests' %}" class="px-4 py-2 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-colors text-xs">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold rounded-xl shadow-sm transition-colors text-xs">
+                        Update Status
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-<div class="row">
-    <form method="POST" action="{% url "update_delivery_status" test_request.id %}">
-        {% csrf_token %}
-        {{ form | crispy }}
-        <button type="submit" class="btn btn-primary">Update Request</button>
-    </form>
-</div>
+
+<style>
+    .active-form-inputs input[type="text"], 
+    .active-form-inputs select, 
+    .active-form-inputs textarea {
+        width: 100%;
+        border-radius: 0.75rem;
+        border-color: #e2e8f0;
+        padding: 0.6rem 0.75rem;
+        margin-top: 0.25rem;
+    }
+    .active-form-inputs label {
+        font-weight: 600;
+        color: #475569;
+        text-transform: uppercase;
+        font-size: 10px;
+        letter-spacing: 0.05em;
+    }
+</style>
 {% endblock body-content %}
